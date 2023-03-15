@@ -4,7 +4,7 @@ int main(){
 
 	int va[2] = { 3,4 }, sum;
 
-	puts("µÎ ¼ö¸¦ ÃÊ±âÈ­ ÇØÁÖ¼¼¿ä");
+	puts("ë°°ì—´ì„ ì´ˆê¸°í™”í•˜ì„¸ìš”");
 	scanf("%d %d", &va[0], &va[1]);
 	sum = va[0] + va[1];
 	printf("%d", sum);
