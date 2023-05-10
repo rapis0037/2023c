@@ -556,7 +556,65 @@ void order_add() {
     // 변경된 상품 목록을 파일에 저장
     save_list(num);
 }
-// 주문 삭제
+
+//주문 정보 수정
+void order_mod() {
+    char order_name[20];
+    int select, a = 0, found = 0;
+
+    printf("주문 수정 \n");
+    printf("수정할 id을 입력해주세요: ");
+    scanf("%s", order_name);
+
+    for (int i = 0; i < num_order; i++) {
+        if (strcmp(order_list[i].id, order_name) == 0) {
+            found = 1;
+
+            while (a == 0) {
+
+                printf("1. 상품명\n");
+                printf("2. 주문자명\n");
+                printf("3. 수량\n");
+                printf("수정할 부분을 선택해주세요: \n");
+                scanf("%d", &select);
+
+                switch (select) {
+
+                case 1:
+                    printf("상품명을 수정해주세요: ");
+                    scanf("%s", order_list[i].p_name);
+                    a = 1;
+                    break;
+
+                case 2:
+                    printf("주문자명을 수정해주세요: ");
+                    scanf("%s", order_list[i].cli_name);
+                    a = 1;
+                    break;
+
+                case 3:
+                    printf("상품명을 수정해주세요: ");
+                    scanf("%s", order_list[i].p_name);
+                    printf("상품 재고를 수정해주세요: ");
+                    scanf("%d", &(order_list[i].quantity));
+                    a = 1;
+                    break;
+
+                default:
+                    printf("메뉴에 없는 번호 입니다. 다시 입력해주세요.\n");
+                }
+                if (a == 1) break;
+            }
+            break;
+        }
+    }
+    if (!found) {
+        printf("id을 찾을 수 없습니다.\n\n");
+    }
+    save_list(1);
+}
+
+// 주문 정보 삭제
 void order_del() {
 
     int num = 1;
@@ -604,6 +662,7 @@ void product_search_manage() {
     int choice, s_price, found;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("검색할 항목을 선택해주세요\n\n");
         printf("0. 메뉴로 돌아가기\n");
         printf("1. 상품명\n");
@@ -666,6 +725,7 @@ void client_search_manage() {
     int choice, found;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("\n검색할 항목을 선택해주세요\n\n");
         printf("0. 메뉴로 돌아가기\n");
         printf("1. 고객명\n");
@@ -748,6 +808,7 @@ void order_search_manage() {
     int choice, found, isearch_t;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("\n검색할 항목을 선택해주세요\n\n");
         printf("0. 메뉴로 돌아가기\n");
         printf("1. 상품명\n");
@@ -900,6 +961,7 @@ void product_manage() {
     int choice;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("1. 상품 추가 메뉴\n");
         printf("2. 상품 수정 메뉴\n");
         printf("3. 상품 삭제 메뉴\n");
@@ -942,6 +1004,7 @@ void client_manage() {
     int choice;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("1. 고객 추가 메뉴\n");
         printf("2. 고객 수정 메뉴\n");
         printf("3. 고객 삭제 메뉴\n");
@@ -984,6 +1047,7 @@ void order_manage() {
     int choice;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("1. 주문 추가 메뉴\n");
         printf("2. 주문 수정 메뉴\n");
         printf("3. 주문 삭제 메뉴\n");
@@ -1026,6 +1090,7 @@ void manage() {
     int choice;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("1. 상품 메뉴\n");
         printf("2. 고객 메뉴\n");
         printf("3. 주문 메뉴\n");
@@ -1064,6 +1129,7 @@ void search_manage() {
     int choice;
 
     while (1) {
+        printf("----------------------------\n\n");
         printf("검색 할 정보를 선택해주세요\n");
         printf("0. 메뉴로 돌아가기\n");
         printf("1. 상품 정보\n");
