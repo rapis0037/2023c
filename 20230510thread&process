@@ -1,0 +1,54 @@
+
+
+
+소켓
+- 모든 서비스를 요청이 들어올 떄마다 바로 처리해준다. -l
+  항상 동작되는 데몬(많이 쓰이는 서비스), 시스템 데몬(  ex)통신 요청이 들어오면 통신 부분만 살려주는 방법) - 소켓
+  sshd(원격통신, 보안성이 강함).socket
+  (inetd ?= system demon) - xinitd 이거 질문
+  
+  #systemctl
+  #systemctl start httpd.service
+  
+브릿지모드 - 리눅스에서 외부
+  
+프로세스와 쓰레드
+다중 프로세스 - 메인 프로세스가 작동하며 필요에 따라 자식 프로세스나 스레드를 생성
+    concurrent(병행)을 하기 위해 필요
+    code
+    Data - 지역,전역 변수 저장
+    Heap - 동적 할당 영역
+    Stack - 변수저장
+쓰레드 - 가벼운 프로세스? 쓰레드들은 프로세스들을 보조하는 역할?code,data,heap은 공유 하지만 stack은 공유x
+       - 메인의 pcb를 쓰레드가 공유하기 때문에 쓰레드를 아무리 많이 사용하더라도 pcb 생성에 의한 성능저하가 거의 발생하지 않는다.
+       - 이런 쓰레드도 많이 만들면 안좋아서 그것을 개선한 쓰레드 풀을 사용한다.
+       
+프로세스 상태전이 부분 질문하기
+순차방식, 병행방식
+
+레지스터를 사용하는 이유?
+(하드웨어 공부도 해야겠다)
+
+sleep(2) - 2초 후 wait 으로 가서 block된다.
+unix-pro-ex1는 다중 프로세스으로 자식과 메인이 pcb를 공유하지 않는 모습을 볼 수 있음
+
+thread-ex .c 
+-l 링크 
+많은 것들이 자동으로 연결된다. 하지만 모든 파일들을 컴파일할 때 링크를 시키면 부담이 커지므로
+- 필요할 때 lpthread를 입력해서 링크를 해준다.
+
+./thread -ex1 5 의 인수는 2개
+char *argv[]에 전해진다.
+//아마 인수 2는 argc로 전해질거 같음
+number = atoi(argv[1]); 정수로 변환
+
+result = pthread_create(&ex_thread[i], NULL, exThreadFunc, (void *)&i);
+&ex_thread[i] // 쓰레드 id가 들어감
+NULL -속성
+exThreadFunc - 쓰레드가 쓸 함수명
+(void *)&i) - 쓰레드의 매개변수(이것도 타입캐스팅) 
+
+d = pthread_self(); 쓰레드 id를 반환 == ex_thread[i]
+
+
+*((int *)) - 타입 캐스팅
