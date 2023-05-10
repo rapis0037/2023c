@@ -49,10 +49,7 @@ void client_add(); //고객 추가
 void client_mod(); //고객 수정
 void client_del(); //고객 삭제
 void order_add();
-/*
 void order_mod();
-*/
-//추가 예정
 void order_del();
 void product_search_manage(); //상품 검색
 void client_search_manage(); //고객 검색
@@ -73,7 +70,6 @@ int main() {
 
     // 프로그램 종료 전 상품 목록을 파일에 저장
     for (int i = 1; i <= 3; i++) save_list(i);
-    //수정 예정
 
     // 동적 메모리 해제
     free(product_list);
