@@ -179,7 +179,7 @@ void load_list() {
     //order 파일 불러오기
     o_file = fopen("order.txt", "r");
     if (o_file == NULL) {
-        printf("상품 파일을 열 수 없습니다.\n\n");
+        printf("주문 파일을 열 수 없습니다.\n\n");
         return;
     }
 
@@ -250,7 +250,7 @@ void save_list(int num) {
     case 3:
         o_file = fopen("order.txt", "w");
         if (o_file == NULL) {
-            printf(" 파일을 열 수 없습니다.\n");
+            printf("주문 파일을 열 수 없습니다.\n");
             fclose(p_file);
             fclose(c_file);
             fclose(o_file);
@@ -267,7 +267,6 @@ void save_list(int num) {
         return;
 
     default:
-        printf("수를 잘못입력하셨습니다.\n");
         return;
 
     }
