@@ -28,18 +28,21 @@ struct order {
 };
 
 //목록
-struct product* product_list = NULL;
+struct product* Product_list = NULL; // 상품 리스트 선언
 int num_product = 0;
 
-struct client* client_list = NULL;
+struct client* Client_list = NULL; // 고객 리스트 선언
 int num_client = 0;
 
-struct order* order_list = NULL;
+struct order* Order_list = NULL; // 주문 리스트 선언
 int num_order = 0;
 
 
-void replace_under(char*);
-void replace_space(char*);
+void replace_under(char*); //공백을 _로 바꾸는 함수
+void replace_space(char*); //_를 공백으로 바꾸는 함수
+void product_search_print(int); //부분 상품 목록 출력
+void clilent_search_print(int); //부분 고객 목록 출력
+void order_search_print(int); //부분 주문 목록 출력
 void load_list(); //리스트 불러오기
 void save_list(int); //리스트 저장하기
 void product_add(); // 상품 추가
@@ -48,18 +51,19 @@ void product_del(); // 상품 삭제
 void client_add(); //고객 추가
 void client_mod(); //고객 수정
 void client_del(); //고객 삭제
-void order_add();
-void order_mod();
-void order_del();
+void order_add(); // 주문 추가
+void order_mod(); // 주문 수정
+void order_del(); //주문 삭제
 void product_search_manage(); //상품 검색
 void client_search_manage(); //고객 검색
 void order_search_manage(); // 주문 검색
-void list_print(int); //통합 완료
+void list_print(int); //목록 출력
 void product_manage(); //상품 정보 메뉴
 void client_mange(); // 고객 정보 메뉴
 void order_manage(); // 주문 정보 메뉴
 void manage(); //통합 메뉴
 void search_manage(); //검색 메뉴
+
 
 int main() {
     // 파일에서 상품 목록을 읽어옴
@@ -72,9 +76,9 @@ int main() {
     for (int i = 1; i <= 3; i++) save_list(i);
 
     // 동적 메모리 해제
-    free(product_list);
-    free(client_list);
-    free(order_list);
+    free(Product_list);
+    free(Client_list);
+    free(Order_list);
 
     return 0;
 }
@@ -100,6 +104,32 @@ void replace_space(char* str) {
     }
 }
 
+void product_search_print(int i) {
+    printf("상품명: %s\n", Product_list[i].name);
+    printf("가격: %d\n", Product_list[i].price);
+    printf("----------------------------\n");
+}
+
+void clilent_search_print(int i) {
+
+    printf("고객명: %s\n", Client_list[i].name);
+    printf("고객 주소: %s\n", Client_list[i].adress);
+    printf("휴대전화: %s\n", Client_list[i].phone);
+    printf("----------------------------\n");
+}
+
+void order_search_print(int i) {
+
+    printf("주문 id: %d\n", Order_list[i].id);
+    printf("상품명: %s\n", Order_list[i].p_name);
+    printf("주문 수량: %d\n", Order_list[i].quantity);
+    printf("주문자: %s\n", Order_list[i].cli_name);
+    printf("주문 날짜: %s\n", Order_list[i].date);
+    printf("----------------------------\n");
+
+}
+
+
 // 파일에서 상품 목록을 읽어옴
 void load_list() {
 
@@ -117,11 +147,11 @@ void load_list() {
     // 상품 수를 파일에서 읽어 옴
     fscanf(p_file, "%d", &num_product);
 
-    product_list = (struct product*)malloc(sizeof(struct product) * num_product);
+    Product_list = (struct product*)malloc(sizeof(struct product) * num_product);
 
     // 상품 정보를 파일에서 읽어 옴
     for (int i = 0; i < num_product; i++) {
-        fscanf(p_file, "%s %d", product_list[i].name, &(product_list[i].price));
+        fscanf(p_file, "%s %d", Product_list[i].name, &(Product_list[i].price));
     }
     fclose(p_file);
 
@@ -136,12 +166,12 @@ void load_list() {
     // 고객 수를 파일에서 읽어 옴
     fscanf(c_file, "%d", &num_client);
 
-    client_list = (struct client*)malloc(sizeof(struct client) * num_client);
+    Client_list = (struct client*)malloc(sizeof(struct client) * num_client);
 
     // 고객 정보를 파일에서 읽어 옴
     for (int i = 0; i < num_client; i++) {
-        replace_under(client_list[i].adress); //주소 밀림 방지
-        fscanf(c_file, "%s %s %s", client_list[i].name, client_list[i].adress, client_list[i].phone);
+        replace_under(Client_list[i].adress); //주소 밀림 방지
+        fscanf(c_file, "%s %s %s", Client_list[i].name, Client_list[i].adress, Client_list[i].phone);
     }
     fclose(c_file);
 
@@ -156,11 +186,11 @@ void load_list() {
     // 주문 수를 파일에서 읽어 옴
     fscanf(o_file, "%d", &num_order);
 
-    order_list = (struct order*)malloc(sizeof(struct order) * num_order);
+    Order_list = (struct order*)malloc(sizeof(struct order) * num_order);
 
     // 주문 정보를 파일에서 읽어 옴
     for (int i = 0; i < num_order; i++) {
-        fscanf(o_file, "%d %s %s %s %d", &(order_list[i].id), order_list[i].p_name, order_list[i].cli_name, order_list[i].date, &(order_list[i].quantity));
+        fscanf(o_file, "%d %s %s %s %d", &(Order_list[i].id), Order_list[i].p_name, Order_list[i].cli_name, Order_list[i].date, &(Order_list[i].quantity));
     }
     fclose(o_file);
 
@@ -192,7 +222,7 @@ void save_list(int num) {
 
         // 상품 정보를 파일에 씀
         for (int i = 0; i < num_product; i++) {
-            fprintf(p_file, "%s %d\n", product_list[i].name, product_list[i].price);
+            fprintf(p_file, "%s %d\n", Product_list[i].name, Product_list[i].price);
         }
         return;
 
@@ -211,8 +241,8 @@ void save_list(int num) {
 
         // 고객 정보를 파일에 씀
         for (int i = 0; i < num_client; i++) {
-            fprintf(c_file, "%s %s %s\n", client_list[i].name, client_list[i].adress, client_list[i].phone);
-            replace_space(client_list[i].adress);
+            fprintf(c_file, "%s %s %s\n", Client_list[i].name, Client_list[i].adress, Client_list[i].phone);
+            replace_space(Client_list[i].adress);
         }
 
         return;
@@ -232,7 +262,7 @@ void save_list(int num) {
 
         // 고객 정보를 파일에 씀
         for (int i = 0; i < num_order; i++) {
-            fprintf(o_file, "%d %s %s %s %d\n", order_list[i].id, order_list[i].p_name, order_list[i].cli_name, order_list[i].date, order_list[i].quantity);
+            fprintf(o_file, "%d %s %s %s %d\n", Order_list[i].id, Order_list[i].p_name, Order_list[i].cli_name, Order_list[i].date, Order_list[i].quantity);
         }
         return;
 
@@ -259,8 +289,12 @@ void product_add() {
 
     // 상품 목록에 추가
     num_product++;
-    product_list = (struct product*)realloc(product_list, sizeof(struct product) * num_product);
-    product_list[num_product - 1] = new_product;
+    Product_list = (struct product*)realloc(Product_list, sizeof(struct product) * num_product);
+    if (Product_list == NULL) {
+        printf("상품 파일을 열 수 없습니다.\n");
+        return;
+    }
+    Product_list[num_product - 1] = new_product;
 
     printf("상품이 추가되었습니다.\n\n");
 
@@ -278,7 +312,7 @@ void product_mod() {
     scanf("%s", product_name);
 
     for (int i = 0; i < num_product; i++) {
-        if (strcmp(product_list[i].name, product_name) == 0) {
+        if (strcmp(Product_list[i].name, product_name) == 0) {
             found = 1;
 
             while (a == 0) {
@@ -293,21 +327,21 @@ void product_mod() {
 
                 case 1:
                     printf("상품명을 수정해주세요: ");
-                    scanf("%s", product_list[i].name);
+                    scanf("%s", Product_list[i].name);
                     a = 1;
                     break;
 
                 case 2:
                     printf("상품 재고를 수정해주세요: ");
-                    scanf("%d", &(product_list[i].price));
+                    scanf("%d", &(Product_list[i].price));
                     a = 1;
                     break;
 
                 case 3:
                     printf("상품명을 수정해주세요: ");
-                    scanf("%s", product_list[i].name);
+                    scanf("%s", Product_list[i].name);
                     printf("상품 재고를 수정해주세요: ");
-                    scanf("%d", &(product_list[i].price));
+                    scanf("%d", &(Product_list[i].price));
                     a = 1;
                     break;
 
@@ -328,7 +362,6 @@ void product_mod() {
 // 상품 삭제
 void product_del() {
 
-    int num = 1;
 
     if (num_product == 0) {
         printf("삭제할 상품이 없습니다.\n\n");
@@ -342,18 +375,19 @@ void product_del() {
 
     int found = 0;
     for (int i = 0; i < num_product; i++) {
-        if (strcmp(product_list[i].name, product_name) == 0) {
+        if (strcmp(Product_list[i].name, product_name) == 0) {
             found = 1;
 
             // 삭제할 상품 이후의 상품들을 한 칸씩 앞으로 이동
 
             for (int j = i; j < num_product - 1; j++) {
-                product_list[j] = product_list[j + 1];
+                Product_list[j] = Product_list[j + 1];
             }
             num_product--;
-            product_list = (struct product*)realloc(product_list, sizeof(struct product) * num_product);
-            if (product_list == NULL) {
+            Product_list = (struct product*)realloc(Product_list, sizeof(struct product) * num_product);
+            if (Product_list == NULL) {
                 printf("product_list에 메모리 재할당을 실패 하였습니다.");
+                free(Product_list);
                 exit(1);
             }
             printf("상품이 삭제되었습니다.\n\n");
@@ -366,7 +400,7 @@ void product_del() {
     }
 
     // 변경된 상품 목록을 파일에 저장
-    save_list(num);
+    save_list(1);
 }
 
 //고객 정보 추가
@@ -391,8 +425,12 @@ void client_add() {
 
     //고객 정보 추가
     num_client++;
-    client_list = (struct client*)realloc(client_list, sizeof(struct client) * num_client);
-    client_list[num_client - 1] = new_client;
+    Client_list = (struct client*)realloc(Client_list, sizeof(struct client) * num_client);
+    if (Client_list == NULL) {
+        printf("고객 파일을 열 수 없습니다.\n");
+        return;
+    }
+    Client_list[num_client - 1] = new_client;
 
     printf("고객님의 정보가 추가되었습니다.\n");
 
@@ -406,64 +444,64 @@ void client_mod() {
     int c_select, b = 0, c_found = 0;
 
     printf("상품 수정 \n");
-    printf("수정할 상품명을 입력해주세요: ");
+    printf("수정할 고객명을 입력해주세요: ");
     scanf("%s", client_name);
 
     for (int i = 0; i < num_client; i++) {
-        if (strcmp(client_list[i].name, client_name) == 0) {
+        if (strcmp(Client_list[i].name, client_name) == 0) {
             c_found = 1;
 
             while (b == 0) {
 
-                printf("1. 고객명\n");
+                printf("\n1. 고객명\n");
                 printf("2. 주소\n");
                 printf("3. 전화번호\n");
                 printf("4. 전부 수정\n");
-                printf("수정할 부분을 선택해주세요: \n");
+                printf("수정할 부분을 선택해주세요:");
                 scanf("%d", &c_select);
                 while (getchar() != '\n');
 
                 switch (c_select) {
 
                 case 1:
-                    printf("고객님의 성함을 수정해주세요: ");
-                    scanf("%s", client_list[i].name);
+                    printf("\n고객님의 성함을 수정해주세요: ");
+                    scanf("%s", Client_list[i].name);
                     while (getchar() != '\n');
                     b = 1;
                     break;
 
                 case 2:
-                    printf("고객님의 주소를 수정해주세요: ");
-                    fgets(client_list[i].adress, sizeof(client_list[i].adress), stdin);
-                    client_list[i].adress[strcspn(client_list[i].adress, "\n")] = '\0'; //fgets함수를 사용해서 같이 받아진 \n을 제거
-                    replace_under(client_list[i].adress);
+                    printf("\n고객님의 주소를 수정해주세요: ");
+                    fgets(Client_list[i].adress, sizeof(Client_list[i].adress), stdin);
+                    Client_list[i].adress[strcspn(Client_list[i].adress, "\n")] = '\0'; //fgets함수를 사용해서 같이 받아진 \n을 제거
+                    replace_under(Client_list[i].adress);
                     b = 1;
                     break;
 
                 case 3:
-                    printf("고객님의 전화번호를 수정해주세요: ");
-                    scanf("%s", client_list[i].phone);
+                    printf("\n고객님의 전화번호를 수정해주세요: ");
+                    scanf("%s", Client_list[i].phone);
                     while (getchar() != '\n');
                     b = 1;
                     break;
                 case 4:
-                    printf("고객님의 성함을 수정해주세요: ");
-                    scanf("%s", client_list[i].name);
+                    printf("\n고객님의 성함을 수정해주세요: ");
+                    scanf("%s", Client_list[i].name);
                     while (getchar() != '\n');
 
-                    printf("고객님의 주소를 수정해주세요: ");
-                    fgets(client_list[i].adress, sizeof(client_list[i].adress), stdin);
-                    client_list[i].adress[strcspn(client_list[i].adress, "\n")] = '\0'; //fgets함수를 사용해서 같이 받아진 \n을 제거
-                    replace_under(client_list[i].adress);
+                    printf("\n고객님의 주소를 수정해주세요: ");
+                    fgets(Client_list[i].adress, sizeof(Client_list[i].adress), stdin);
+                    Client_list[i].adress[strcspn(Client_list[i].adress, "\n")] = '\0'; //fgets함수를 사용해서 같이 받아진 \n을 제거
+                    replace_under(Client_list[i].adress);
 
-                    printf("고객님의 전화번호를 수정해주세요: ");
-                    scanf("%s", client_list[i].phone);
+                    printf("\n고객님의 전화번호를 수정해주세요: ");
+                    scanf("%s", Client_list[i].phone);
                     while (getchar() != '\n');
                     b = 1;
                     break;
 
                 default:
-                    printf("메뉴에 없는 번호 입니다. 다시 입력해주세요.\n");
+                    printf("\n메뉴에 없는 번호 입니다. 다시 입력해주세요.\n");
                 }
                 if (b == 1) break;
             }
@@ -493,18 +531,19 @@ void client_del() {
 
     int found = 0;
     for (int i = 0; i < num_client; i++) {
-        if (strcmp(client_list[i].name, client_name) == 0) {
+        if (strcmp(Client_list[i].name, client_name) == 0) {
             found = 1;
 
             // 삭제할 고객 이후의 고객들을 한 칸씩 앞으로 이동
 
             for (int j = i; j < num_client - 1; j++) {
-                client_list[j] = client_list[j + 1];
+                Client_list[j] = Client_list[j + 1];
             }
             num_client--;
-            client_list = (struct client*)realloc(client_list, sizeof(struct client) * num_client);
-            if (client_list == NULL) {
+            Client_list = (struct client*)realloc(Client_list, sizeof(struct client) * num_client);
+            if (Client_list == NULL) {
                 printf("client_list에 메모리 재할당을 실패 하였습니다.");
+                free(Client_list);
                 exit(1);
             }
             printf("고객이 삭제되었습니다.\n\n");
@@ -515,23 +554,25 @@ void client_del() {
     if (!found) {
         printf("고객을 찾을 수 없습니다.\n\n");
     }
+    save_list(2);
 }
 
 // 주문 정보 추가
 void order_add() {
     struct order new_order;
-    int num = 1;
+    srand(time(NULL));
 
-    printf("주문 추가\n\n");
-
-    printf("상품명을 입력해주세요: ");
+    printf("\n상품명을 입력해주세요: ");
     scanf("%s", new_order.p_name);
 
-    printf("주문자를 입력해주세요: ");
+    printf("\n주문자를 입력해주세요: ");
     scanf("%s", new_order.cli_name);
 
-    printf("수량을 입력해주세요: ");
+    printf("\n수량을 입력해주세요: ");
     scanf("%d", &(new_order.quantity));
+
+    printf("\n주문id는 랜덤으로 추가됩니다.\n");
+    new_order.id = rand() % 10000000;
 
     printf("주문 날짜는 현재 날짜로 추가됩니다.\n ");
     //주문 날짜
@@ -544,13 +585,17 @@ void order_add() {
 
     // 상품 목록에 추가
     num_order++;
-    order_list = (struct order*)realloc(order_list, sizeof(struct order) * num_order);
-    order_list[num_order - 1] = new_order;
+    Order_list = (struct order*)realloc(Order_list, sizeof(struct order) * num_order);
+    if (Order_list == NULL) {
+        printf("\n주문 파일을 열 수 없습니다.\n");
+        return;
+    }
+    Order_list[num_order - 1] = new_order;
 
-    printf("주문이 완료되었습니다.\n\n");
+    printf("\n주문이 완료되었습니다.\n\n");
 
     // 변경된 상품 목록을 파일에 저장
-    save_list(num);
+    save_list(3);
 }
 
 //주문 정보 수정
@@ -563,14 +608,15 @@ void order_mod() {
     scanf("%s", order_name);
 
     for (int i = 0; i < num_order; i++) {
-        if (strcmp(order_list[i].id, order_name) == 0) {
+        if (strcmp(Order_list[i].id, order_name) == 0) {
             found = 1;
 
             while (a == 0) {
 
                 printf("1. 상품명\n");
                 printf("2. 주문자명\n");
-                printf("3. 수량\n");
+                printf("3. id\n");
+                printf("4. 수량\n");
                 printf("수정할 부분을 선택해주세요: \n");
                 scanf("%d", &select);
 
@@ -578,21 +624,25 @@ void order_mod() {
 
                 case 1:
                     printf("상품명을 수정해주세요: ");
-                    scanf("%s", order_list[i].p_name);
+                    scanf("%s", Order_list[i].p_name);
                     a = 1;
                     break;
 
                 case 2:
                     printf("주문자명을 수정해주세요: ");
-                    scanf("%s", order_list[i].cli_name);
+                    scanf("%s", Order_list[i].cli_name);
                     a = 1;
                     break;
 
                 case 3:
-                    printf("상품명을 수정해주세요: ");
-                    scanf("%s", order_list[i].p_name);
+                    printf("id를 수정해주세요: ");
+                    scanf("%d", &Order_list[i].id);
+                    a = 1;
+                    break;
+
+                case 4:
                     printf("상품 재고를 수정해주세요: ");
-                    scanf("%d", &(order_list[i].quantity));
+                    scanf("%d", &(Order_list[i].quantity));
                     a = 1;
                     break;
 
@@ -607,13 +657,14 @@ void order_mod() {
     if (!found) {
         printf("id을 찾을 수 없습니다.\n\n");
     }
-    save_list(1);
+    save_list(3);
 }
 
 // 주문 정보 삭제
 void order_del() {
 
     int num = 1;
+    int order_id;
 
     if (num_order == 0) {
         printf("삭제할 주문이 없습니다.\n\n");
@@ -621,24 +672,24 @@ void order_del() {
     }
 
     printf("주문 삭제\n");
-    printf("삭제할 주문명을 입력해주세요: ");
-    char order_name[20];
-    scanf("%s", order_name);
+    printf("삭제할 id를 입력해주세요: ");
+    scanf("%d", &order_id);
 
     int found = 0;
     for (int i = 0; i < num_order; i++) {
-        if (strcmp(order_list[i].p_name, order_name) == 0) {
+        if(Order_list[i].id == order_id) {
             found = 1;
 
             // 삭제할 주문 이후의 주문들을 한 칸씩 앞으로 이동
 
             for (int j = i; j < num_order - 1; j++) {
-                order_list[j] = order_list[j + 1];
+                Order_list[j] = Order_list[j + 1];
             }
             num_order--;
-            order_list = (struct order*)realloc(order_list, sizeof(struct order) * num_order);
-            if (order_list == NULL) {
+            Order_list = (struct order*)realloc(Order_list, sizeof(struct order) * num_order);
+            if (Order_list == NULL) {
                 printf("order_list에 메모리 재할당을 실패 하였습니다.");
+                free(Order_list);
                 exit(1);
             }
             printf("주문이 삭제되었습니다.\n\n");
@@ -649,6 +700,7 @@ void order_del() {
     if (!found) {
         printf("주문을 찾을 수 없습니다.\n\n");
     }
+    save_list(3);
 }
 
 //상품 검색
@@ -675,11 +727,10 @@ void product_search_manage() {
             printf("\n검색할 상품명을 입력해주세요: ");
             scanf("%s", search_t);
             for (int i = 0; i < num_product; i++) {
-                if (strcmp(product_list[i].name, search_t) == 0) {
+                if (strcmp(Product_list[i].name, search_t) == 0) {
                     found = 1;
-                    printf("상품명: %s\n", product_list[i].name);
-                    printf("가격: %d\n", product_list[i].price);
-                    printf("----------------------------\n");
+                    product_search_print(i);
+                    
                 }
             }
             if (!found) printf("검색 결과가 없습니다.\n\n");
@@ -692,11 +743,9 @@ void product_search_manage() {
             printf("\n검색할 가격을 입력해주세요: ");
             scanf("%d", &s_price);
             for (int i = 0; i < num_product; i++) {
-                if (product_list[i].price == s_price) {
+                if (Product_list[i].price == s_price) {
                     found = 1;
-                    printf("상품명: %s\n", product_list[i].name);
-                    printf("가격: %d\n", product_list[i].price);
-                    printf("----------------------------\n");
+                    product_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
@@ -713,6 +762,7 @@ void product_search_manage() {
     }
 
 }
+
 
 //고객 검색
 void client_search_manage() {
@@ -739,12 +789,9 @@ void client_search_manage() {
             printf("\n검색할 고객명을 입력해주세요: ");
             scanf("%s", search_t);
             for (int i = 0; i < num_client; i++) {
-                if (strcmp(client_list[i].name, search_t) == 0) {
+                if (strcmp(Client_list[i].name, search_t) == 0) {
                     found = 1;
-                    printf("고객명: %s\n", client_list[i].name);
-                    printf("고객 주소: %s\n", client_list[i].adress);
-                    printf("휴대전화: %s\n", client_list[i].phone);
-                    printf("----------------------------\n");
+                    clilent_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
@@ -757,12 +804,9 @@ void client_search_manage() {
             printf("\n검색할 주소를 입력해주세요: ");
             scanf("%s", search_t);
             for (int i = 0; i < num_client; i++) {
-                if (strcmp(client_list[i].adress, search_t) == 0) {
+                if (strcmp(Client_list[i].adress, search_t) == 0) {
                     found = 1;
-                    printf("고객명: %s\n", client_list[i].name);
-                    printf("고객 주소: %s\n", client_list[i].adress);
-                    printf("휴대전화: %s\n", client_list[i].phone);
-                    printf("----------------------------\n");
+                    clilent_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
@@ -775,12 +819,9 @@ void client_search_manage() {
             printf("\n검색할 전화번호를 입력해주세요: ");
             scanf("%s", search_t);
             for (int i = 0; i < num_client; i++) {
-                if (strcmp(client_list[i].phone, search_t) == 0) {
+                if (strcmp(Client_list[i].phone, search_t) == 0) {
                     found = 1;
-                    printf("고객명: %s\n", client_list[i].name);
-                    printf("고객 주소: %s\n", client_list[i].adress);
-                    printf("휴대전화: %s\n", client_list[i].phone);
-                    printf("----------------------------\n");
+                    clilent_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
@@ -796,6 +837,8 @@ void client_search_manage() {
     }
 
 }
+
+
 
 //주문 검색
 void order_search_manage() {
@@ -823,13 +866,13 @@ void order_search_manage() {
             printf("\n검색할 상품명을 입력해주세요: ");
             scanf("%s", search_t);
             for (int i = 0; i < num_order; i++) {
-                if (strcmp(order_list[i].p_name, search_t) == 0) {
+                if (strcmp(Order_list[i].p_name, search_t) == 0) {
                     found = 1;
-                    printf("주문 id: %d\n", order_list[i].id);
-                    printf("상품명: %s\n", order_list[i].p_name);
-                    printf("주문 수량: %d\n", order_list[i].quantity);
-                    printf("주문자: %s\n", order_list[i].cli_name);
-                    printf("주문 날짜: %s\n", order_list[i].date);
+                    printf("주문 id: %d\n", Order_list[i].id);
+                    printf("상품명: %s\n", Order_list[i].p_name);
+                    printf("주문 수량: %d\n", Order_list[i].quantity);
+                    printf("주문자: %s\n", Order_list[i].cli_name);
+                    printf("주문 날짜: %s\n", Order_list[i].date);
                     printf("----------------------------\n");
                 }
             }
@@ -843,14 +886,9 @@ void order_search_manage() {
             printf("\n검색할 주문자명을 입력해주세요: ");
             scanf("%s", search_t);
             for (int i = 0; i < num_order; i++) {
-                if (strcmp(order_list[i].cli_name, search_t) == 0) {
+                if (strcmp(Order_list[i].cli_name, search_t) == 0) {
                     found = 1;
-                    printf("주문 id: %d\n", order_list[i].id);
-                    printf("상품명: %s\n", order_list[i].p_name);
-                    printf("주문 수량: %d\n", order_list[i].quantity);
-                    printf("주문자: %s\n", order_list[i].cli_name);
-                    printf("주문 날짜: %s\n", order_list[i].date);
-                    printf("----------------------------\n");
+                    order_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
@@ -863,14 +901,9 @@ void order_search_manage() {
             printf("검색할 주문 날짜를 입력해주세요: ");
             scanf("%s", search_t);
             for (int i = 0; i < num_order; i++) {
-                if (strcmp(order_list[i].date, search_t) == 0) {
+                if (strcmp(Order_list[i].date, search_t) == 0) {
                     found = 1;
-                    printf("주문 id: %d\n", order_list[i].id);
-                    printf("상품명: %s\n", order_list[i].p_name);
-                    printf("주문 수량: %d\n", order_list[i].quantity);
-                    printf("주문자: %s\n", order_list[i].cli_name);
-                    printf("주문 날짜: %s\n", order_list[i].date);
-                    printf("----------------------------\n");
+                    order_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
@@ -883,14 +916,9 @@ void order_search_manage() {
             printf("검색할 주문 id를 입력해주세요: ");
             scanf("%d", &isearch_t);
             for (int i = 0; i < num_order; i++) {
-                if (order_list[i].id == isearch_t) {
+                if (Order_list[i].id == isearch_t) {
                     found = 1;
-                    printf("주문 id: %d\n", order_list[i].id);
-                    printf("상품명: %s\n", order_list[i].p_name);
-                    printf("주문 수량: %d\n", order_list[i].quantity);
-                    printf("주문자: %s\n", order_list[i].cli_name);
-                    printf("주문 날짜: %s\n", order_list[i].date);
-                    printf("----------------------------\n");
+                    order_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
@@ -910,6 +938,8 @@ void order_search_manage() {
 
 }
 
+
+
 //목록 출력
 void list_print(int num) {
 
@@ -919,8 +949,8 @@ void list_print(int num) {
         printf("상품 목록\n\n");
         printf("----------------------------\n\n");
         for (int i = 0; i < num_product; i++) {
-            printf("상품명: %s\n", product_list[i].name);
-            printf("가격: %d\n\n", product_list[i].price);
+            printf("상품명: %s\n", Product_list[i].name);
+            printf("가격: %d\n\n", Product_list[i].price);
             printf("----------------------------\n\n");
         }
         break;
@@ -929,9 +959,9 @@ void list_print(int num) {
         printf("고객 목록\n\n");
         printf("----------------------------\n\n");
         for (int i = 0; i < num_client; i++) {
-            printf("상품명: %s\n", client_list[i].name);
-            printf("주소: %s\n", client_list[i].adress);
-            printf("휴대전화: %s\n\n", client_list[i].phone);
+            printf("상품명: %s\n", Client_list[i].name);
+            printf("주소: %s\n", Client_list[i].adress);
+            printf("휴대전화: %s\n\n", Client_list[i].phone);
             printf("----------------------------\n\n");
         }
         break;
@@ -940,11 +970,11 @@ void list_print(int num) {
         printf("주문 목록\n\n");
         printf("----------------------------\n\n");
         for (int i = 0; i < num_order; i++) {
-            printf("상품명: %d\n", order_list[i].id);
-            printf("가격: %s\n", order_list[i].p_name);
-            printf("가격: %s\n", order_list[i].cli_name);
-            printf("가격: %s\n", order_list[i].date);
-            printf("가격: %d\n\n", order_list[i].quantity);
+            printf("주문 id: %d\n", Order_list[i].id);
+            printf("상품명: %s\n", Order_list[i].p_name);
+            printf("주문자명: %s\n", Order_list[i].cli_name);
+            printf("날짜: %s\n", Order_list[i].date);
+            printf("주문 수량: %d\n\n", Order_list[i].quantity);
             printf("----------------------------\n\n");
         }
         break;
@@ -1057,11 +1087,11 @@ void order_manage() {
         case 0:
             exit(1);
         case 1:
-            // order_add();
+            order_add();
             break;
 
         case 2:
-            // order_mod();
+            order_mod();
             break;
 
         case 3:
