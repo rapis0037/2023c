@@ -868,12 +868,7 @@ void order_search_manage() {
             for (int i = 0; i < num_order; i++) {
                 if (strcmp(Order_list[i].p_name, search_t) == 0) {
                     found = 1;
-                    printf("주문 id: %d\n", Order_list[i].id);
-                    printf("상품명: %s\n", Order_list[i].p_name);
-                    printf("주문 수량: %d\n", Order_list[i].quantity);
-                    printf("주문자: %s\n", Order_list[i].cli_name);
-                    printf("주문 날짜: %s\n", Order_list[i].date);
-                    printf("----------------------------\n");
+                    order_search_print(i);
                 }
             }
             if (!found) printf("\n검색 결과가 없습니다.\n\n");
