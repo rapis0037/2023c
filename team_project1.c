@@ -121,9 +121,9 @@ void clilent_search_print(int i) {
 void order_search_print(int i) {
 
     printf("주문 id: %d\n", Order_list[i].id);
+    printf("주문자: %s\n", Order_list[i].cli_name);
     printf("상품명: %s\n", Order_list[i].p_name);
     printf("주문 수량: %d\n", Order_list[i].quantity);
-    printf("주문자: %s\n", Order_list[i].cli_name);
     printf("주문 날짜: %s\n", Order_list[i].date);
     printf("----------------------------\n");
 
@@ -179,7 +179,7 @@ void load_list() {
     //order 파일 불러오기
     o_file = fopen("order.txt", "r");
     if (o_file == NULL) {
-        printf("주문 파일을 열 수 없습니다.\n\n");
+        printf("상품 파일을 열 수 없습니다.\n\n");
         return;
     }
 
@@ -250,7 +250,7 @@ void save_list(int num) {
     case 3:
         o_file = fopen("order.txt", "w");
         if (o_file == NULL) {
-            printf("주문 파일을 열 수 없습니다.\n");
+            printf(" 파일을 열 수 없습니다.\n");
             fclose(p_file);
             fclose(c_file);
             fclose(o_file);
@@ -267,6 +267,7 @@ void save_list(int num) {
         return;
 
     default:
+        printf("수를 잘못입력하셨습니다.\n");
         return;
 
     }
@@ -943,9 +944,7 @@ void list_print(int num) {
         printf("상품 목록\n\n");
         printf("----------------------------\n\n");
         for (int i = 0; i < num_product; i++) {
-            printf("상품명: %s\n", Product_list[i].name);
-            printf("가격: %d\n\n", Product_list[i].price);
-            printf("----------------------------\n\n");
+            product_search_print(i);
         }
         break;
 
@@ -953,10 +952,7 @@ void list_print(int num) {
         printf("고객 목록\n\n");
         printf("----------------------------\n\n");
         for (int i = 0; i < num_client; i++) {
-            printf("상품명: %s\n", Client_list[i].name);
-            printf("주소: %s\n", Client_list[i].adress);
-            printf("휴대전화: %s\n\n", Client_list[i].phone);
-            printf("----------------------------\n\n");
+            clilent_search_print(i);
         }
         break;
 
@@ -964,12 +960,7 @@ void list_print(int num) {
         printf("주문 목록\n\n");
         printf("----------------------------\n\n");
         for (int i = 0; i < num_order; i++) {
-            printf("주문 id: %d\n", Order_list[i].id);
-            printf("상품명: %s\n", Order_list[i].p_name);
-            printf("주문자명: %s\n", Order_list[i].cli_name);
-            printf("날짜: %s\n", Order_list[i].date);
-            printf("주문 수량: %d\n\n", Order_list[i].quantity);
-            printf("----------------------------\n\n");
+            order_search_print(i);
         }
         break;
     }
